@@ -14,6 +14,7 @@ public class Player {
         
     }
 
+
     public void renderPlayer(RenderHandler renderer) {
         renderer.renderSprite(_sprite, posx, posy);
     }
@@ -43,7 +44,10 @@ public class Player {
     }
     
 
-
+    public void setSprite(Sprite sprite)
+    {
+        _sprite=sprite;
+    }
     
 
     

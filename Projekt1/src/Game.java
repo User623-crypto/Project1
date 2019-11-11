@@ -31,7 +31,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private Canvas canvas=new Canvas();
     private RenderHandler renderer;
     private Rectangle as;
-    private Sprite testSprite;
+    private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown;
     public int z=0;
     public Player a;
     private int keyCode=0;
@@ -71,8 +71,12 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //BufferedImage testImage3=loadImage("Flash3.png");
 
     //Initialize Player
-    testSprite=new Sprite("Flash3.png");
-    a=new Player(100, 100, 50, testSprite);
+    Flash=new Sprite("Flash3.png"); Flashdown=new Sprite("Flashrun-down.png");
+    RunningFlash=new Sprite("Flashrun.png");
+    Flashleft=new Sprite("Flashrun-left.png");
+    Flashup=new Sprite("Flashrun-up.png");
+    //Initialize Player
+    a=new Player(100, 100, 50, Flash);
     
     //Initialize Map
     Sprite tileGrass=new Sprite("GrassTile.png");
@@ -88,20 +92,25 @@ public class Game extends JFrame implements Runnable,KeyListener {
         {
             case KeyEvent.VK_UP:
             a.moveUp();
+            a.setSprite(Flashup);
             break;
 
             case KeyEvent.VK_DOWN:
             a.moveDown();
+            a.setSprite(Flashdown);
             break;
 
             case KeyEvent.VK_LEFT:
             a.moveLeft();
+            a.setSprite(Flashleft);
             break;
 
             case KeyEvent.VK_RIGHT:
             a.moveRight();
+            a.setSprite(RunningFlash);
             break;
             default:
+            a.setSprite(Flash);
             break;
 
         }
@@ -120,8 +129,9 @@ public class Game extends JFrame implements Runnable,KeyListener {
         super.paint(graphics);
  
         map.loadMap(renderer);
-
+       
         a.renderPlayer(renderer);
+        
         
         renderer.render(graphics);
 
