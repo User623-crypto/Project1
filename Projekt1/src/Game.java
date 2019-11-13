@@ -36,7 +36,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     public Player player;
     private int keyCode=0;
     private Map1 map;
-    
+    int c = 0;
     public Player enemy;
     public Sprite enemy_sprite;
 
