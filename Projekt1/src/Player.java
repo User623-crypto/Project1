@@ -49,6 +49,18 @@ public class Player {
         _sprite=sprite;
     }
     
-
+    /*Added by ADEM 
+     * 
+     */
+    
+    //return pos
+    public int Player_X()
+    {
+    	return posx;
+    }
+    public int Player_Y()
+    {
+    	return posy;
+    }
     
 }

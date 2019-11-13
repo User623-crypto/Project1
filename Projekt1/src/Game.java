@@ -33,11 +33,15 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private Rectangle as;
     private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown;
     public int z=0;
-    public Player a;
+    public Player player;
     private int keyCode=0;
     private Map1 map;
-
     
+    public Player enemy;
+    public Sprite enemy_sprite;
+
+    private double move_X;
+    private double move_Y;
 
     public Game()
     {
@@ -75,8 +79,12 @@ public class Game extends JFrame implements Runnable,KeyListener {
     RunningFlash=new Sprite("Flashrun.png");
     Flashleft=new Sprite("Flashrun-left.png");
     Flashup=new Sprite("Flashrun-up.png");
+    
+    
+    enemy_sprite = new Sprite("Flash3.png");
+    enemy = new Player(0,0,50,enemy_sprite);
     //Initialize Player
-    a=new Player(100, 100, 50, Flash);
+    player=new Player(100, 100, 50, Flash);
     
     //Initialize Map
     Sprite tileGrass=new Sprite("GrassTile.png");
@@ -91,26 +99,30 @@ public class Game extends JFrame implements Runnable,KeyListener {
         switch(keyCode)
         {
             case KeyEvent.VK_UP:
-            a.moveUp();
-            a.setSprite(Flashup);
+            player.moveUp();
+            player.setSprite(Flashup);
+            //move_enemy();
             break;
 
             case KeyEvent.VK_DOWN:
-            a.moveDown();
-            a.setSprite(Flashdown);
+            player.moveDown();
+            player.setSprite(Flashdown);
+           // move_enemy();
             break;
 
             case KeyEvent.VK_LEFT:
-            a.moveLeft();
-            a.setSprite(Flashleft);
+            player.moveLeft();
+            player.setSprite(Flashleft);
+            //move_enemy();
             break;
 
             case KeyEvent.VK_RIGHT:
-            a.moveRight();
-            a.setSprite(RunningFlash);
+            player.moveRight();
+            player.setSprite(RunningFlash);
+            //move_enemy();
             break;
             default:
-            a.setSprite(Flash);
+            player.setSprite(Flash);
             break;
 
         }
@@ -119,6 +131,265 @@ public class Game extends JFrame implements Runnable,KeyListener {
     }
 
 
+    
+    /* Added by ADEM 
+     * 
+     * 
+     * 
+     */
+    
+    
+    //Move and Follow my character by an enemy
+    
+    //leviz vetem horizontal
+    public void move_horizontally()
+    {
+    	if(enemy.Player_X() < player.Player_X())
+		
+			move_right();
+		else
+			move_left();
+		
+    }
+    
+    public void move_right()
+    {
+    	move_Y = enemy.Player_Y();
+    	move_X = enemy.Player_X();
+		  
+		  while(move_X< player.Player_X())
+		  {
+			  
+            try {
+            	
+            	
+                Thread.sleep(200);
+            	move_X = move_X + 1;
+            	//move_Y = move_Y - dif;
+            	enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+            	} 
+            
+            catch (Exception ex) {
+            	
+            }
+		  }
+    }
+    
+    public void move_left()
+    {
+    	move_Y = enemy.Player_Y();
+    	move_X = enemy.Player_X();
+		  
+		  while(move_X > player.Player_X())
+		  {
+			  
+            try {
+            	
+            	
+            	Thread.sleep(200);
+            	move_X = move_X - 1;
+            	//move_Y = move_Y - dif;
+            	enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+            	} 
+            
+            catch (Exception ex) {
+            	
+            }
+		  }
+    }
+    
+    //leviz vetem vertical
+    public void move_vertically()
+    {
+    	if(enemy.Player_Y() > player.Player_Y())
+    		move_up();
+    	else
+    		move_down();
+    }
+    
+    public void move_up()
+    {
+    	move_X = enemy.Player_X();
+		move_Y = enemy.Player_Y();
+		 while(move_Y > player.Player_Y())
+		  {
+             
+               try {
+               
+               	Thread.sleep(200);
+               	//move_X = move_X - 1;
+               	move_Y = move_Y - 1;
+               	enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+               	} 
+               
+               catch (Exception ex) {
+               	
+               }
+		  }
+    }
+    
+    public void move_down()
+    {
+    	move_X = enemy.Player_X();
+		move_Y = enemy.Player_Y();
+		 while(move_Y < player.Player_Y())
+		  {
+             
+               try {
+               
+               	Thread.sleep(200);
+               	//move_X = move_X - 1;
+               	move_Y = move_Y + 1;
+               	enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+               	} 
+               
+               catch (Exception ex) {
+               	
+               }
+		  }
+    }
+    
+    //funksioni qe do te kryeje levizjen e enemy
+    public void move_enemy()
+    {
+    	
+    	//Thread animationThread = new Thread(new Runnable() {
+    		//@Override
+    	
+    	Runnable runnable = new Runnable() {
+           @Override
+            public void run() {
+            	while(!Thread.interrupted())
+            	{
+            		if(enemy.Player_Y() - player.Player_Y() < 10 && enemy.Player_Y() - player.Player_Y() > -10)
+                	{
+
+      					  move_horizontally();
+      			     }
+                	
+                	
+                	//kontrollon kushtin per levizjen verticale
+                	if(enemy.Player_X() - player.Player_X() < 10 && enemy.Player_X() - player.Player_X() > -10)
+        			  {
+        				  
+        					  move_vertically();
+        			     }
+                	
+                	
+                	
+                //Behet levizja edhe diagonale ne rastin kur enemy ndodhet lart PLAYER-it	
+                  if(enemy.Player_Y() < player.Player_Y())
+          		   {
+                		 
+                	  	//levizja diagonal kur enemy ndodhet lart dhe majtas PLAYER-it
+          		           if(enemy.Player_X() < player.Player_X())
+          		           {
+          		        	 move_X = enemy.Player_X();
+          		        	 move_Y = enemy.Player_Y();
+          		        	  while(enemy.Player_X() < player.Player_X() && enemy.Player_Y() < player.Player_Y())
+          		        	  {
+          	                        try {
+          	                        	double dif = 50/(double)player.Player_X() - enemy.Player_X();
+          	                        	Thread.sleep(200);
+          	                        		move_X = move_X + 1;
+          	                        		move_Y = move_Y + dif;
+          	                        		enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+          	                        		
+          	                        	} 
+          	                        
+          	                        catch (Exception ex) {
+          	                        	
+          	                        }
+          		        	  }
+          		           }
+          		           
+          		           
+          		           //levizja diagonal kur enemy ndodhet lart dhe djathtas PLAYEr-it
+          		         if(enemy.Player_X() > player.Player_X())
+        		           {
+        		        	 move_X = enemy.Player_X();
+        		        	 move_Y = enemy.Player_Y();
+        		        	  while(enemy.Player_X() > player.Player_X() && enemy.Player_Y() < player.Player_Y())
+        		        	  {
+
+        	                        try {
+        	                        	double dif = 50/(double)player.Player_X() - enemy.Player_X();
+
+        	                        	Thread.sleep(200);
+        	                        		move_X = move_X - 1;
+        	                        		move_Y = move_Y + dif;
+        	                        		enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+        	                        		
+        	                        	} 
+        	                        
+        	                        catch (Exception ex) {
+        	                        	
+        	                        }
+        		        	  }
+        		           }
+          		   }
+                	 
+                	 
+                  //Levizja e enemy kur ndodhet poshte PLAYER- it
+                if(enemy.Player_Y() > player.Player_Y())
+            		   {
+                  		 	// Poshte majtas
+            		           if(enemy.Player_X() < player.Player_X())
+            		           {
+            		        	 move_X = enemy.Player_X();
+            		        	 move_Y = enemy.Player_Y();
+            		        	  while(enemy.Player_X() < player.Player_X() && enemy.Player_Y() > player.Player_Y())
+            		        	  {
+
+            	                        try {
+            	                        	double dif = 50/(double)player.Player_X() - enemy.Player_X();
+            	                        	Thread.sleep(200);
+            	                        		move_X = move_X + 1;
+            	                        		move_Y = move_Y - dif;
+            	                        		enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+            	                        		
+            	                        	} 
+            	                        
+            	                        catch (Exception ex) {
+            	                        	
+            	                        }
+            		        	  }
+            		           }
+            		           
+            		           
+            		           //poshte djathtas
+            		         if(enemy.Player_X() > player.Player_X())
+          		           	{
+            		        	 move_X = enemy.Player_X();
+            		        	 move_Y = enemy.Player_Y();
+          		        	  while(enemy.Player_X() > player.Player_X() && enemy.Player_Y() > player.Player_Y())
+          		        	  {
+
+          	                        try {
+          	                        	double dif = 50/(double)player.Player_X() - enemy.Player_X();
+          	                        	
+          	                        	Thread.sleep(200);
+          	                        		move_X = move_X - 1;
+          	                        		move_Y = move_Y - dif;
+          	                        		enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+          	                        		
+          	                        	} 
+          	                        
+          	                        catch (Exception ex) {
+          	                        	
+          	                        }
+          		        	  }
+          		           }
+            		   }
+                }
+            	}
+        };
+        
+        Thread my_thread = new Thread(runnable);      
+        my_thread.start();
+
+    }
+    //  -- FUND  ADDED  BY ADEM
     //It renders all components on the screen
     public void render()
     {
@@ -130,8 +401,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
  
         map.loadMap(renderer);
        
-        a.renderPlayer(renderer);
-        
+        player.renderPlayer(renderer);
+        enemy.renderPlayer(renderer);
         
         renderer.render(graphics);
 
@@ -169,7 +440,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
     }
  
 
-
+    
+ 
     //Kanë problem
     @Override
     public void keyTyped(KeyEvent e) {
