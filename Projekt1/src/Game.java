@@ -44,7 +44,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private double move_Y;
     
     private int roel;
-
+    private int adem;
     public Game()
     {
         as=new Rectangle(0,0,50,50);
