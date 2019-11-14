@@ -43,6 +43,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private double move_X;
     private double move_Y;
     
+    Thread my_thread;
     private int roel;
     private int adem;
     public Game()
@@ -95,6 +96,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     }
     
     //It updates the elements on the screen
+    
     public void update()
     {
         
@@ -103,25 +105,25 @@ public class Game extends JFrame implements Runnable,KeyListener {
             case KeyEvent.VK_UP:
             player.moveUp();
             player.setSprite(Flashup);
-            //move_enemy();
+            move_enemy();
             break;
 
             case KeyEvent.VK_DOWN:
             player.moveDown();
             player.setSprite(Flashdown);
-           // move_enemy();
+            move_enemy();
             break;
 
             case KeyEvent.VK_LEFT:
             player.moveLeft();
             player.setSprite(Flashleft);
-            //move_enemy();
+            move_enemy();
             break;
 
             case KeyEvent.VK_RIGHT:
             player.moveRight();
             player.setSprite(RunningFlash);
-            //move_enemy();
+            move_enemy();
             break;
             default:
             player.setSprite(Flash);
@@ -133,7 +135,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     }
 
 
-    
+
     /* Added by ADEM 
      * 
      * 
@@ -254,12 +256,11 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //funksioni qe do te kryeje levizjen e enemy
     public void move_enemy()
     {
-    	
     	//Thread animationThread = new Thread(new Runnable() {
     		//@Override
     	
     	Runnable runnable = new Runnable() {
-           @Override
+           // @Override
             public void run() {
             	while(!Thread.interrupted())
             	{
@@ -295,7 +296,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
           	                        	Thread.sleep(200);
           	                        		move_X = move_X + 1;
           	                        		move_Y = move_Y + dif;
-          	                        		enemy = new Player((int)move_X,(int)move_Y,50,enemy_sprite);
+          	                        		enemy.moveRight();
+          	                        		enemy.moveDown();
           	                        		
           	                        	} 
           	                        
@@ -387,7 +389,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
             	}
         };
         
-        Thread my_thread = new Thread(runnable);      
+        my_thread = new Thread(runnable);      
         my_thread.start();
 
     }
