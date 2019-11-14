@@ -42,6 +42,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
 
     private double move_X;
     private double move_Y;
+    
+    private int roel;
 
     public Game()
     {
