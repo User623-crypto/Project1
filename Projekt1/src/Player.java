@@ -6,7 +6,7 @@ public class Player {
     private int speed=10;
     private int _height;
     private int _width;
-    private static final int tolerance_range=10;//Marzh gabimi
+    private static final int tolerance_range=8;//Marzh gabimi
     private int nr_i_vektorit=0;
 
     Player(int x, int y, int h,  Sprite sprite) {
