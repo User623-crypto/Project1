@@ -1,15 +1,21 @@
 
 public class Player {
-    private int posx, posy, hp;
-    Sprite _sprite; 
-    int speed=10;
-    int up,down,left,right;
+    private int posx, posy;
+	private  int hp;
+    private Sprite _sprite; 
+    private int speed=10;
+    private int _height;
+    private int _width;
+    private static final int tolerance_range=10;//Marzh gabimi
+    private int nr_i_vektorit=0;
 
-    Player(int x, int y, int h, Sprite sprite) {
+    Player(int x, int y, int h,  Sprite sprite) {
         posx = x;
         posy = y;
         hp = h;
         _sprite = sprite;
+        _height=sprite.getHeight();
+        _width=sprite.getWidth();
 
         
     }
@@ -42,25 +48,189 @@ public class Player {
     {
         posy+=speed;
     }
-    
 
+    public void halfspeed()
+    {
+        speed=2;
+    }
+    public void fullspeed()
+    {
+        speed=10;
+    }
+    
+/****************************************************** */
+    //Getters
+    public int Getx()
+    {
+        return posx;
+    }
+    public int Gety()
+    {
+        return posy;
+    }
+    public int Getwidth()
+    {
+        return _width;
+    }
+    public int getHeight()
+    {
+        return _height;
+    }
+    public int getSpeed()
+    {
+        return speed;
+    }
+
+    public int poistionV()
+    {
+        return nr_i_vektorit;
+    }
+
+    /****************************************** */
+    //Setters
     public void setSprite(Sprite sprite)
     {
         _sprite=sprite;
     }
-    
-    /*Added by ADEM 
-     * 
-     */
-    
-    //return pos
-    public int Player_X()
+    public void setSpeed(int s)
     {
-    	return posx;
+        speed=s;
     }
-    public int Player_Y()
+
+    //********************************************************************************* */
+    //COLLISION CHECK Testing
+
+    /*public boolean checkleft( Rectangle a )
     {
-    	return posy;
+            if(posx<=(a.x+a.w+tolerance_range) && ((posx+tolerance_range)>a.x) && (posy+_height)>a.y && posy<(a.y+a.h))
+                  return true;
+            
+        return false;
     }
-    
+
+    public boolean checkright(Rectangle a)
+    {
+        if((posx+_width+tolerance_range)>a.x && ((posx)<=a.x+tolerance_range) && (posy+_height)>a.y && posy<(a.y+a.h))
+               return true;
+        
+        return false;
+    }
+
+    public boolean checkup(Rectangle a)
+    {
+        if(posy<=(a.y+a.h+tolerance_range) && ((posy+tolerance_range)>=a.y) && (posx+_width)>a.x && (posx)<(a.x+a.w))
+            return true;
+        
+        return false;
+    }
+
+    public boolean checkdown(Rectangle a)
+    {
+        if((posy+_height+tolerance_range)>=(a.y) && ((posy)<=a.y+tolerance_range) && (posx+_width)>a.x && (posx)<(a.x+a.w))
+             return true;
+        
+        return false;
+    }
+
+
+    public boolean checkObjcollisionRight(Rectangle [] a )
+    {
+        for(int i=0;i<a.length;i++)
+            if(checkright(a[i])){return true;}
+        
+        return false;
+    }
+    public boolean checkObjcollisionLeft(Rectangle [] a )
+    {
+        for(int i=0;i<a.length;i++)
+             if(checkleft(a[i])){return true;}
+
+        return false;
+    }
+
+    public boolean checkObjcollisionUp(Rectangle [] a )
+    {
+        for(int i=0;i<a.length;i++)
+            if(checkup(a[i])){return true;}
+        
+        return false;
+    }
+
+    public boolean checkObjcollisionDown(Rectangle [] a )
+    {
+        for(int i=0;i<a.length;i++)
+            if(checkdown(a[i])){return true;}
+        
+        return false;
+    }*/
+
+    /************************************************************************** */
+    //Collision of OBJECT
+
+    public boolean checkleft( Object a )
+    {
+            if(posx<=(a.getX()+a.getWidth()+tolerance_range) && ((posx+tolerance_range)>a.getX()) && (posy+_height)>a.getY() && posy<(a.getY()+a.getHeight()))
+                  return true;
+            
+        return false;
+    }
+
+    public boolean checkright(Object a)
+    {
+        if((posx+_width+tolerance_range)>a.getX() && ((posx)<=a.getX()+tolerance_range) && (posy+_height)>a.getY() && posy<(a.getY()+a.getHeight()))
+               return true;
+        
+        return false;
+    }
+
+    public boolean checkup(Object a)
+    {
+        if(posy<=(a.getY()+a.getHeight()+tolerance_range) && ((posy+tolerance_range)>=a.getY()) && (posx+_width)>a.getX() && (posx)<(a.getX()+a.getWidth()))
+            return true;
+        
+        return false;
+    }
+
+    public boolean checkdown(Object a)
+    {
+        if((posy+_height+tolerance_range)>=(a.getY()) && ((posy)<=a.getY()+tolerance_range) && (posx+_width)>a.getX() && (posx)<(a.getX()+a.getWidth()))
+             return true;
+        
+        return false;
+    }
+
+
+    public boolean checkObjcollisionRight(Object [] a )
+    {
+        for(int i=0;i<a.length;i++){
+            {nr_i_vektorit=i;
+            if(checkright(a[i])){return true;}}}
+        return false;
+    }
+    public boolean checkObjcollisionLeft(Object [] a )
+    {
+        for(int i=0;i<a.length;i++){nr_i_vektorit=i;
+             if(checkleft(a[i])){return true;}}
+
+        return false;
+    }
+
+    public boolean checkObjcollisionUp(Object [] a )
+    {
+        for(int i=0;i<a.length;i++){nr_i_vektorit=i;
+            if(checkup(a[i])){return true;}}
+        
+        return false;
+    }
+
+    public boolean checkObjcollisionDown(Object [] a )
+    {
+        for(int i=0;i<a.length;i++){nr_i_vektorit=i;
+            if(checkdown(a[i])){return true;}}
+        
+        return false;
+    }
+    /************************************************************************************************* */
+         
+   
 }

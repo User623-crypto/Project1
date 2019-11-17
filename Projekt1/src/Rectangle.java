@@ -33,4 +33,13 @@ public class Rectangle{
            else
            return null;
        }
+
+       public int Getx()
+       {
+           return x;
+       }
+       public int Gety()
+       {
+           return y;
+       }
    }
