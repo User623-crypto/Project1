@@ -4,5 +4,6 @@ public class Start{
         Game a=new Game();
         Thread gamethread=new Thread(a);//thread ekzekuton nje run dhe duhet te marri parameter
         gamethread.start();
+        
     }
 }

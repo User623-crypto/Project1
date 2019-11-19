@@ -56,19 +56,16 @@ public class Game extends JFrame implements Runnable,KeyListener {
         //Inicializim
         //vektor=new Object[4];
         
-        //Inicializim Blloqe
-        Sprite blloku=new Sprite("Bllok.png");
-        bllok1=new Bllok(16, 186, blloku);
-        bllok2=new Bllok(66, 186, blloku);
-        bllok3=new Bllok(116, 186, blloku);
-        bllok4=new Bllok(166, 186, blloku);
-        bllok5=new Bllok(166, 16, blloku);
-        bllok6=new Bllok(166, 66, blloku);
+
+        
 
         //Inicializim i murit vertical
         Sprite wallv=new Sprite("thisiswall.png");
+        Sprite wallh=new Sprite("thiswall2.png");
         vWall=new Bllok(1200,16,wallv);
         vWall2=new Bllok(1200,544,wallv);
+        bllok1=new Bllok(250,200,wallv);
+        bllok2=new Bllok(250,600,wallh);
         
         //Lake
         water=new Water(772,568);
@@ -80,7 +77,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
 
 
         //Objektet qe do shfaqen
-        vektor=new Object[] {bllok1,bllok2,bllok3,bllok4,bllok5,bllok6,water,vWall,vWall2,gate};
+        vektor=new Object[] {bllok1,bllok2,water,vWall,vWall2,gate};
         
         
 
@@ -259,6 +256,11 @@ public class Game extends JFrame implements Runnable,KeyListener {
                     }
                 }
             break;
+            
+            case KeyEvent.VK_A:
+            	//player.setSprite(sprite);
+            	break;
+            
             default:
             player.setSprite(Flash);
             player.fullspeed();

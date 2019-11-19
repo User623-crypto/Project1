@@ -1,5 +1,5 @@
 public class Water extends Object{
-    private static Sprite _sprite = new Sprite("water1.jpg");
+    private static Sprite _sprite = new Sprite("WaterTile2.png");
 
     Water(int posx, int posy) {
         super(posx, posy, _sprite);
