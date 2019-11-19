@@ -5,27 +5,50 @@ public class Enemy extends Follow_Player  {
 	private double enemy_x;
 	private double enemy_y;
 	private int enemy_height;
-	private int enemy_width;
+    private int enemy_width;
+    private int enemy_hp=220;/* Added from R */
 	Sprite _sprite;
 	Player player;
 	double speed = 1;
 	int _tolerance_range = 8;
 	private int _nr_i_vektorit=0;
 	Thread my_thread;
-	Rectangle _barrier;
+    Rectangle _barrier;
+    Rectangle _enemyhpline;/*Added by R */
 	Enemy(int x, int y, Sprite sprite) {
 		enemy_x = x;
 		enemy_y = y;
 		_sprite = sprite;
 		enemy_height=sprite.getHeight();
         enemy_width=sprite.getWidth();
+        _enemyhpline=new Rectangle((int)enemy_x,(int)enemy_y,enemy_hp,2);
+        _enemyhpline.generateGraphics(0xFFFF0000);
 		
 		
 	}
 
-	
+    /*ADDED FROM R */
+    public int GetHp()
+    {
+        return enemy_hp;
+    }
+
+    public void reduceHp(int x)
+    {
+        enemy_hp-=x;
+    }
+
+
+
+
+    /*************************************************************** */
 	public void renderEnemy(RenderHandler renderer) {
+        if(enemy_hp>0){
+        renderer.renderRectangle(_enemyhpline,(int)enemy_x,(int)enemy_y, enemy_hp, 1);/**Added by R */
         renderer.renderSprite(_sprite, (int)enemy_x, (int)enemy_y);
+        }
+        else{enemy_x=0;enemy_y=0;}
+        //else{_sprite=null; enemy_x=0;enemy_y=0;}
     }
 	
 	public void move_right(double my_speed)

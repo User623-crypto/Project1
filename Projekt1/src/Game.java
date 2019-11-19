@@ -31,7 +31,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private Canvas canvas=new Canvas();
     private RenderHandler renderer;
     private Rectangle as;
-    private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown;
+    private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown,Flashattack;
     public int z=0;
     public Player player;
     private int keyCode=0;
@@ -41,12 +41,16 @@ public class Game extends JFrame implements Runnable,KeyListener {
     Rectangle ak[];
     private Object []vektor;
     private Object water;
-    private Object bllok1,bllok2,bllok3,bllok4,bllok5,bllok6,vWall,vWall2;
+    private Object bllok1,bllok2,bllok3,bllok4,bllok5,bllok6,vWall,vWall2,vWall3;
     private Object gate;
-    
-    private Enemy enemy;
-    Follow_Player follow;
 
+    
+    private Enemy enemy,enemy2,enemy3,enemy4;
+    private  Enemy [] enemyvektor;
+    Follow_Player follow;
+    private boolean victorycondition1=false;
+    private boolean victorycondition2=false;
+    
     
 
     public Game()
@@ -57,13 +61,13 @@ public class Game extends JFrame implements Runnable,KeyListener {
         //vektor=new Object[4];
         
 
-        
+         
 
         //Inicializim i murit vertical
         Sprite wallv=new Sprite("thisiswall.png");
         Sprite wallh=new Sprite("thiswall2.png");
         vWall=new Bllok(1200,16,wallv);
-        vWall2=new Bllok(1200,544,wallv);
+        vWall2=new Bllok(1200,494,new Sprite("thisiswall2.png"));
         bllok1=new Bllok(250,200,wallv);
         bllok2=new Bllok(250,600,wallh);
         
@@ -73,11 +77,13 @@ public class Game extends JFrame implements Runnable,KeyListener {
         //Porta
         gate=new Gate(1200, 416);
 
-
+        //Celsi
+        bllok3=new Key(200,800);
 
 
         //Objektet qe do shfaqen
-        vektor=new Object[] {bllok1,bllok2,water,vWall,vWall2,gate};
+        //deren leje gjithmone te fundit
+        vektor=new Object[] {bllok1,bllok2,bllok3,water,vWall,vWall2,gate};
         
         
 
@@ -86,7 +92,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
 
 
 
-        
+        //Testing
         as=new Rectangle(200,300,50,50);
         as.generateGraphics(11234);
    
@@ -98,6 +104,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
     setLocationRelativeTo(null);
 
     //It adds Canvas to the window (able to draw graphical components) 
+    
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
      
     
     add(canvas);
@@ -118,10 +126,14 @@ public class Game extends JFrame implements Runnable,KeyListener {
     
     //Inicilizmi i Enemy
     enemy = new Enemy(10,25,new Sprite("Flash3.png"));
+  
+    
+    enemyvektor=new Enemy[]{enemy};
+    
     //Initialize Player
     Flash=new Sprite("Flash3.png"); Flashdown=new Sprite("Flashrun-down.png");
     RunningFlash=new Sprite("Flashrun.png"); Flashleft=new Sprite("Flashrun-left.png");
-    Flashup=new Sprite("Flashrun-up.png");
+    Flashup=new Sprite("Flashrun-up.png"); Flashattack=new Sprite("FlashAttack1.png");
     player=new Player(100, 100, 50, Flash);
     
     //Initialize Map
@@ -136,28 +148,28 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //It updates the elements on the screen
     public void update()
     {
-    	
+    	for(int i=0;i<enemyvektor.length;i++) {
     	//Funksioni per levizjen e kundershtarit ...
-        enemy.move_enemy(enemy, player);
-    	if(outOfBoundUp(enemy))
+    		enemyvektor[i].move_enemy(enemyvektor[i], player);
+    	if(outOfBoundUp(enemyvektor[i]))
     	{
 
-    		enemy.move_up(-2);
+    		enemyvektor[i].move_up(-2);
     	}
-    	if(outOfBoundDown(enemy))
+    	if(outOfBoundDown(enemyvektor[i]))
     	{
 
-    		enemy.move_down(-2);
+    		enemyvektor[i].move_down(-2);
     	}
-    	if(outOfBoundLeft(enemy))
+    	if(outOfBoundLeft(enemyvektor[i]))
     	{
 
-    		enemy.move_left(-2);
+    		enemyvektor[i].move_left(-2);
     	}
-    	if(outOfBoundRight(enemy))
+    	if(outOfBoundRight(enemyvektor[i]))
     	{
 
-    		enemy.move_right(-2);
+    		enemyvektor[i].move_right(-2);
     	}
     	/*
     	if(!enemy.checkObjcollisionDown(vektor))
@@ -170,23 +182,23 @@ public class Game extends JFrame implements Runnable,KeyListener {
         	enemy.move_enemy(enemy, player);
     	}
     	*/
-    	if(enemy.checkObjcollisionLeft(vektor))
+    	if(enemyvektor[i].checkObjcollisionLeft(vektor))
     	{
-        	enemy.move_right(16);
+    		enemyvektor[i].move_right(16);
     	}
-    	else if(enemy.checkObjcollisionRight(vektor))
+    	else if(enemyvektor[i].checkObjcollisionRight(vektor))
     	{
-        	enemy.move_left(16);
+    		enemyvektor[i].move_left(16);
     	}
     	
-    	else if(enemy.checkObjcollisionDown(vektor))
+    	else if(enemyvektor[i].checkObjcollisionDown(vektor))
     	{
-    		enemy.move_up(10);  
+    		enemyvektor[i].move_up(10);  
     		}
     	
-    	else if(enemy.checkObjcollisionUp(vektor))
+    	else if(enemyvektor[i].checkObjcollisionUp(vektor))
     	{
-        	enemy.move_down(10);
+    		enemyvektor[i].move_down(10);
     	}
     	/*
     	if(!enemy.checkObjcollisionRight(vektor)&&!outOfBoundRight(enemy))
@@ -198,21 +210,36 @@ public class Game extends JFrame implements Runnable,KeyListener {
     	{
         	enemy.move_enemy(enemy,player);
     	}*/
+    	}
+    	
         switch(keyCode)
         {
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_A:
             player.setSprite(Flashup);
             //Checks if the player collide with any of the objects inside the vector && if he is out of border
-            if(!player.checkObjcollisionUp(vektor)&&!outOfBoundUp(player)){
-                
-                player.moveUp(); 
+            if(!player.checkObjcollisionUp(vektor)&&!outOfBoundUp(player))
+                {
+                    player.moveUp(); 
                 }
                 else{
                         //Checks the object type so it acts different in different types
-                        if(vektor[player.poistionV()].returnType()==1&&!outOfBoundUp(player))
-                            {   player.halfspeed();
-                                player.moveUp();
-                            }
+                        if(!outOfBoundUp(player))
+                        {   
+                            switch (vektor[player.poistionV()].returnType()) 
+                            {
+                                case 1:
+                                    player.halfspeed();
+                                    player.moveUp();
+                                    break;
+                                case 2:
+                                    victorycondition1=true;
+                                    vektor = removeArrayElement(vektor, vektor[player.poistionV()],vektor[vektor.length-1]);
+                                    player.moveUp();
+                                    break;
+                                default:
+                                    break;
+                            }      
+                        }
                     }
             break;
 
@@ -222,11 +249,25 @@ public class Game extends JFrame implements Runnable,KeyListener {
                 player.moveDown(); 
                 }
                 else{
-                        if(vektor[player.poistionV()].returnType()==1&&!outOfBoundDown(player))
-                        {   player.halfspeed();
-                            player.moveDown();
-                        }
-                    }   
+                    //Checks the object type so it acts different in different types
+                    if(!outOfBoundUp(player))
+                    {   
+                        switch (vektor[player.poistionV()].returnType()) 
+                        {
+                            case 1:
+                                player.halfspeed();
+                                player.moveDown();
+                                break;
+                            case 2:
+                                victorycondition1=true;
+                                vektor = removeArrayElement(vektor, vektor[player.poistionV()],vektor[vektor.length-1]);
+                                player.moveDown();
+                                break;
+                            default:
+                                break;
+                        }      
+                    }
+                }   
             break;
 
             case KeyEvent.VK_LEFT:
@@ -235,10 +276,23 @@ public class Game extends JFrame implements Runnable,KeyListener {
                 player.moveLeft(); 
                 }
                 else{
-                    if(vektor[player.poistionV()].returnType()==1&&!outOfBoundLeft(player))
-                    {   player.halfspeed();
-                        player.moveLeft();
-                        
+                    //Checks the object type so it acts different in different types
+                    if(!outOfBoundUp(player))
+                    {   
+                        switch (vektor[player.poistionV()].returnType()) 
+                        {
+                            case 1:
+                                player.halfspeed();
+                                player.moveLeft();
+                                break;
+                            case 2:
+                                victorycondition1=true;
+                                vektor = removeArrayElement(vektor, vektor[player.poistionV()],vektor[vektor.length-1]);
+                                player.moveLeft();
+                                break;
+                            default:
+                                break;
+                        }      
                     }
                 }
             break;
@@ -249,16 +303,35 @@ public class Game extends JFrame implements Runnable,KeyListener {
                 player.moveRight(); 
                 }
                 else{
-                    if(vektor[player.poistionV()].returnType()==1&&!outOfBoundRight(player))
-                    {   player.halfspeed();
-                        player.moveRight();
-                        
+                    //Checks the object type so it acts different in different types
+                    if(!outOfBoundUp(player))
+                    {   
+                        switch (vektor[player.poistionV()].returnType()) 
+                        {
+                            case 1:
+                                player.halfspeed();
+                                player.moveRight();
+                                break;
+                            case 2:
+                                victorycondition1=true;
+                                vektor = removeArrayElement(vektor, vektor[player.poistionV()],vektor[vektor.length-1]);
+                                player.moveRight();
+                                break;
+                            default:
+                                break;
+                        }      
                     }
                 }
             break;
             
-            case KeyEvent.VK_A:
-            	//player.setSprite(sprite);
+            case KeyEvent.VK_UP:
+                player.setSprite(Flashattack);
+                
+            	if(player.player_catch_enemy(enemy)){
+                    enemy.reduceHp(player.Getattack());
+                }
+            	
+            	
             	break;
             
             default:
@@ -287,9 +360,12 @@ public class Game extends JFrame implements Runnable,KeyListener {
             vektor[i].renderObject(renderer);
         }
         
+        for(int i=0;i<enemyvektor.length;i++)
+        {
+            enemyvektor[i].renderEnemy(renderer);
+        }
         
         player.renderPlayer(renderer);
-        enemy.renderEnemy(renderer);
         renderer.render(graphics);
 
         graphics.dispose();
@@ -322,6 +398,9 @@ public class Game extends JFrame implements Runnable,KeyListener {
             }
             render();
             lastTime=now;
+
+            if(victorycondition1&&victorycondition2)
+                break;
         }
 
         
@@ -348,6 +427,10 @@ public class Game extends JFrame implements Runnable,KeyListener {
         keyCode=0;
 
     }
+
+
+
+
 //********************************************************************************************************** */
     //Border collision
     public boolean outOfBounds(Player a)
@@ -404,6 +487,23 @@ public class Game extends JFrame implements Runnable,KeyListener {
     {
         if(a.Enemy_Y()+a._getHeight()<Height-16){return false;}
         return true;
+    }
+
+    /******************************************************* */
+    public Object [] removeArrayElement(Object [] a,Object b,Object g)
+    {
+        Object []c =new Object[a.length-2];
+        int j=0;
+        for(int i=0;i<a.length;i++)
+        {
+            
+            if(a[i]!=b  && (a[i]!=g))
+            {
+               c[j]=a[i];
+               j++;
+            }
+        }
+        return c;
     }
     
 }

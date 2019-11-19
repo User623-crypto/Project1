@@ -91,7 +91,6 @@ public class RenderHandler{
     //Sets the pixels
     private void setPixles(int pixel,int x,int y)
     {
-      
         int pixelIndex=(x)+(y)*view.getWidth();
         //OutofBounds Check
         if(pixels.length>pixelIndex && pixel!=Game.alpha)
@@ -119,11 +118,10 @@ public class RenderHandler{
         if(rectanglePixels!=null)
           renderArray(rectanglePixels, rectangle.w, rectangle.h, rectangle.x, rectangle.y,xZoom,yZoom);
     }
-    
-    public void renderBullet(ThrowBullet _bullet,int xZoom,int yZoom)
+    public void renderRectangle(Rectangle rectangle,int xPosition,int yPosition,int width,int height)
     {
-        int[] rectanglePixels=_bullet.getPixels();
+        int[] rectanglePixels=rectangle.getPixels();
         if(rectanglePixels!=null)
-          renderArray(rectanglePixels, _bullet._w, _bullet._h, _bullet._x, _bullet._y,xZoom,yZoom);
+          renderArray(rectanglePixels, width, height, xPosition, yPosition,1,1);
     }
 }

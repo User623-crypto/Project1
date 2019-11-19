@@ -37,8 +37,11 @@ abstract class Object{
     public void renderObject(RenderHandler renderer) {
         renderer.renderSprite(_sprite, _posx, _posy);
     }
-    public int returnType()
+    protected int returnType()
     {
         return type;
+    }
+    protected void disappear()
+    {
     }
 }

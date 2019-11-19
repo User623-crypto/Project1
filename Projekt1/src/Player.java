@@ -1,28 +1,38 @@
 
 public class Player {
     private int posx, posy;
-	private  int hp;
+	private  int _hp;
     private Sprite _sprite; 
     private int speed=10;
     private int _height;
     private int _width;
     private static final int tolerance_range=8;//Marzh gabimi
     private int nr_i_vektorit=0;
+    private int _attack=10;
+    Rectangle _hpline;
 
     Player(int x, int y, int h,  Sprite sprite) {
         posx = x;
         posy = y;
-        hp = h;
+        _hp = h;
         _sprite = sprite;
         _height=sprite.getHeight();
         _width=sprite.getWidth();
+        _hpline=new Rectangle(posx, posy-10, _hp, 2);
+        _hpline.generateGraphics(0xFFFF0000);
+        
 
         
     }
 
 
+
     public void renderPlayer(RenderHandler renderer) {
+        
+        
+        renderer.renderRectangle(_hpline,posx,posy,1, 1);
         renderer.renderSprite(_sprite, posx, posy);
+
     }
 
     public void movePlayer() {
@@ -86,6 +96,15 @@ public class Player {
         return nr_i_vektorit;
     }
 
+    public int Gethp()
+    {
+        return _hp;
+    }
+
+    public int Getattack()
+    {
+        return _attack;
+    }
     /****************************************** */
     //Setters
     public void setSprite(Sprite sprite)
@@ -96,6 +115,13 @@ public class Player {
     {
         speed=s;
     }
+
+    //Heq jeten e lojtarit
+    public void reduceHealth(int a)
+    {
+        _hp-=a;
+    }
+
 
     //********************************************************************************* */
     //COLLISION CHECK Testing

@@ -7,7 +7,7 @@ public class Gate extends Object{
     @Override
     public int returnType() {
         
-        return 2;
+        return 0;
     }
 
 }
