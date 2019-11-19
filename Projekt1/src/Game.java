@@ -33,7 +33,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private Rectangle as;
     private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown;
     public int z=0;
-    public Player a;
+    public Player player;
     private int keyCode=0;
     private Map1 map;
     private Border border;
@@ -43,6 +43,9 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private Object water;
     private Object bllok1,bllok2,bllok3,bllok4,bllok5,bllok6,vWall,vWall2;
     private Object gate;
+    
+    private Enemy enemy;
+    Follow_Player follow;
 
     
 
@@ -115,12 +118,14 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //testImage=loadImage("Beton.png");
     //testImage2=loadImage("GrassTile.png");
     //BufferedImage testImage3=loadImage("Flash3.png");
-
+    
+    //Inicilizmi i Enemy
+    enemy = new Enemy(10,25,new Sprite("Flash3.png"));
     //Initialize Player
     Flash=new Sprite("Flash3.png"); Flashdown=new Sprite("Flashrun-down.png");
     RunningFlash=new Sprite("Flashrun.png"); Flashleft=new Sprite("Flashrun-left.png");
     Flashup=new Sprite("Flashrun-up.png");
-    a=new Player(100, 100, 50, Flash);
+    player=new Player(100, 100, 50, Flash);
     
     //Initialize Map
     Sprite tileGrass=new Sprite("GrassTile.png");
@@ -134,68 +139,129 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //It updates the elements on the screen
     public void update()
     {
-        
+    	
+    	//Funksioni per levizjen e kundershtarit ...
+        enemy.move_enemy(enemy, player);
+    	if(outOfBoundUp(enemy))
+    	{
+
+    		enemy.move_up(-2);
+    	}
+    	if(outOfBoundDown(enemy))
+    	{
+
+    		enemy.move_down(-2);
+    	}
+    	if(outOfBoundLeft(enemy))
+    	{
+
+    		enemy.move_left(-2);
+    	}
+    	if(outOfBoundRight(enemy))
+    	{
+
+    		enemy.move_right(-2);
+    	}
+    	/*
+    	if(!enemy.checkObjcollisionDown(vektor))
+    	{
+    		enemy.move_enemy(enemy, player);
+    	}
+    	
+    	if(!enemy.checkObjcollisionUp(vektor))
+    	{
+        	enemy.move_enemy(enemy, player);
+    	}
+    	*/
+    	if(enemy.checkObjcollisionLeft(vektor))
+    	{
+        	enemy.move_right(16);
+    	}
+    	else if(enemy.checkObjcollisionRight(vektor))
+    	{
+        	enemy.move_left(16);
+    	}
+    	
+    	else if(enemy.checkObjcollisionDown(vektor))
+    	{
+    		enemy.move_up(10);  
+    		}
+    	
+    	else if(enemy.checkObjcollisionUp(vektor))
+    	{
+        	enemy.move_down(10);
+    	}
+    	/*
+    	if(!enemy.checkObjcollisionRight(vektor)&&!outOfBoundRight(enemy))
+    	{
+        	enemy.move_enemy(enemy,player);
+    	}
+    	
+    	if(!enemy.checkObjcollisionLeft(vektor)&&!outOfBoundLeft(enemy))
+    	{
+        	enemy.move_enemy(enemy,player);
+    	}*/
         switch(keyCode)
         {
             case KeyEvent.VK_UP:
-            a.setSprite(Flashup);
+            player.setSprite(Flashup);
             //Checks if the player collide with any of the objects inside the vector && if he is out of border
-            if(!a.checkObjcollisionUp(vektor)&&!outOfBoundUp(a)){
+            if(!player.checkObjcollisionUp(vektor)&&!outOfBoundUp(player)){
                 
-                a.moveUp(); 
+                player.moveUp(); 
                 }
                 else{
                         //Checks the object type so it acts different in different types
-                        if(vektor[a.poistionV()].returnType()==1&&!outOfBoundUp(a))
-                            {   a.halfspeed();
-                                a.moveUp();
+                        if(vektor[player.poistionV()].returnType()==1&&!outOfBoundUp(player))
+                            {   player.halfspeed();
+                                player.moveUp();
                             }
                     }
             break;
 
             case KeyEvent.VK_DOWN:
-            a.setSprite(Flashdown);
-            if(!a.checkObjcollisionDown(vektor)&&!outOfBoundDown(a)){
-                a.moveDown(); 
+            player.setSprite(Flashdown);
+            if(!player.checkObjcollisionDown(vektor)&&!outOfBoundDown(player)){
+                player.moveDown(); 
                 }
                 else{
-                        if(vektor[a.poistionV()].returnType()==1&&!outOfBoundDown(a))
-                        {   a.halfspeed();
-                            a.moveDown();
+                        if(vektor[player.poistionV()].returnType()==1&&!outOfBoundDown(player))
+                        {   player.halfspeed();
+                            player.moveDown();
                         }
                     }   
             break;
 
             case KeyEvent.VK_LEFT:
-            a.setSprite(Flashleft);
-            if(!a.checkObjcollisionLeft(vektor)&&!outOfBoundLeft(a)){
-                a.moveLeft(); 
+            player.setSprite(Flashleft);
+            if(!player.checkObjcollisionLeft(vektor)&&!outOfBoundLeft(player)){
+                player.moveLeft(); 
                 }
                 else{
-                    if(vektor[a.poistionV()].returnType()==1&&!outOfBoundLeft(a))
-                    {   a.halfspeed();
-                        a.moveLeft();
+                    if(vektor[player.poistionV()].returnType()==1&&!outOfBoundLeft(player))
+                    {   player.halfspeed();
+                        player.moveLeft();
                         
                     }
                 }
             break;
 
             case KeyEvent.VK_RIGHT:
-            a.setSprite(RunningFlash);
-            if(!a.checkObjcollisionRight(vektor)&&!outOfBoundRight(a)){
-                a.moveRight(); 
+            player.setSprite(RunningFlash);
+            if(!player.checkObjcollisionRight(vektor)&&!outOfBoundRight(player)){
+                player.moveRight(); 
                 }
                 else{
-                    if(vektor[a.poistionV()].returnType()==1&&!outOfBoundRight(a))
-                    {   a.halfspeed();
-                        a.moveRight();
+                    if(vektor[player.poistionV()].returnType()==1&&!outOfBoundRight(player))
+                    {   player.halfspeed();
+                        player.moveRight();
                         
                     }
                 }
             break;
             default:
-            a.setSprite(Flash);
-            a.fullspeed();
+            player.setSprite(Flash);
+            player.fullspeed();
             break;
 
         }
@@ -220,8 +286,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
         }
         
         
-        a.renderPlayer(renderer);
-        
+        player.renderPlayer(renderer);
+        enemy.renderEnemy(renderer);
         renderer.render(graphics);
 
         graphics.dispose();
@@ -299,12 +365,42 @@ public class Game extends JFrame implements Runnable,KeyListener {
     }
     public boolean outOfBoundUp(Player a)
     {
-        if(16<a.Gety()){return false;}
+        if(30<a.Gety()){return false;}
         return true;
     }
     public boolean outOfBoundDown(Player a)
     {
         if(a.Gety()+a.getHeight()<Height-16){return false;}
+        return true;
+    }
+    
+    
+    
+    
+    
+    public boolean outOfBounds(Enemy a)
+    {
+        if(16<a.Enemy_X()-10 && a.Enemy_X()+a._getwidth()+10<Width-16 && 16<a.Enemy_Y()-10 && a.Enemy_Y()+a._getHeight()+10<Height-16 ){return false;}
+        return true;
+    }
+    public boolean outOfBoundLeft(Enemy a)
+    {
+        if(16<a.Enemy_X()){return false;}
+        return true;
+    }
+    public boolean outOfBoundRight(Enemy a)
+    {
+        if(a.Enemy_X()+a._getwidth()<Width-16 ){return false;}
+        return true;
+    }
+    public boolean outOfBoundUp(Enemy a)
+    {
+        if(45<a.Enemy_X()){return false;}
+        return true;
+    }
+    public boolean outOfBoundDown(Enemy a)
+    {
+        if(a.Enemy_Y()+a._getHeight()<Height-16){return false;}
         return true;
     }
     

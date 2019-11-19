@@ -231,6 +231,19 @@ public class Player {
         return false;
     }
     /************************************************************************************************* */
-         
+        
+    /*
+     * ADDED BY ADEM    - > - > Kontrollon nese lojtari eshte takuar me enemy
+     */
+    
+    
+    public boolean player_catch_enemy(Enemy _enemy)
+	 {
+    	if( ((Math.abs((_enemy.Enemy_X() + 32 ) - (Getx() + 32) ) < 10) &&  (Math.abs((_enemy.Enemy_Y() + 32 ) - (Gety() + 32) ) < 10)))
+		 //if(((_x  - Getx() > 0) && (_x  - Getx() < 40))&& (((_y - player.Gety()) > 0) && ((y - player.Gety()) < 40)))
+			  return true;
+		
+		 return false;
+	 }	
    
 }
