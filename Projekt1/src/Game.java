@@ -59,7 +59,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
         //Objektet qe do shfaqen ne Harte
         //Inicializim
         //vektor=new Object[4];
-        
+        requestFocusInWindow();
 
          
 
@@ -72,7 +72,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
         bllok2=new Bllok(250,600,wallh);
         
         //Lake
-        water=new Water(772,568);
+        water=new Water(772,500);
 
         //Porta
         gate=new Gate(1200, 416);
@@ -99,7 +99,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
  
     //SetsBounds of the frame
     setBounds(0,0,Width,Height);
-        
+    
     //Sets to center the frame
     setLocationRelativeTo(null);
 
@@ -126,9 +126,12 @@ public class Game extends JFrame implements Runnable,KeyListener {
     
     //Inicilizmi i Enemy
     enemy = new Enemy(10,25,new Sprite("Flash3.png"));
+    enemy2 = new Enemy(10,25,new Sprite("Flash3.png"));
+    enemy3 = new Enemy(10,25,new Sprite("Flash3.png"));
+    enemy4 = new Enemy(10,25,new Sprite("Flash3.png"));
   
     
-    enemyvektor=new Enemy[]{enemy};
+    enemyvektor=new Enemy[]{enemy,enemy2,enemy3,enemy4};
     
     //Initialize Player
     Flash=new Sprite("Flash3.png"); Flashdown=new Sprite("Flashrun-down.png");
@@ -214,7 +217,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     	
         switch(keyCode)
         {
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_UP:
             player.setSprite(Flashup);
             //Checks if the player collide with any of the objects inside the vector && if he is out of border
             if(!player.checkObjcollisionUp(vektor)&&!outOfBoundUp(player))
@@ -324,14 +327,20 @@ public class Game extends JFrame implements Runnable,KeyListener {
                 }
             break;
             
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_ALT:
                 player.setSprite(Flashattack);
-                
-            	if(player.player_catch_enemy(enemy)){
-                    enemy.reduceHp(player.Getattack());
+                for(int i=0;i<enemyvektor.length;i++){
+            	if(player.player_catch_enemy(enemyvektor[i])){
+                    
+                    player.attack(enemyvektor[i]);
+                    if(enemyvektor[i].GetHp()<=0)
+                    {
+                        //Removes the enemy from the enemyvector
+                        enemyvektor=removEnemies(enemyvektor, enemyvektor[i]);
+                    }
+
                 }
-            	
-            	
+            }	
             	break;
             
             default:
@@ -375,8 +384,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
 
     //The method that gets executed by the thread
     public void run(){//ASAP
-        //setFocusable(true);
-        
+        //setFocusable(true); 
         addKeyListener(this);
         
 
@@ -389,6 +397,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
         //Standard
         while(true){
             requestFocus();
+            
            long now=System.nanoTime();
            changeInSeconds +=(now-lastTime)/nanoSecondConversion;
             while(changeInSeconds>=1)
@@ -399,11 +408,16 @@ public class Game extends JFrame implements Runnable,KeyListener {
             render();
             lastTime=now;
 
-            if(victorycondition1&&victorycondition2)
-                break;
+            //Kushti i fitores 
+            if(enemyvektor.length==0){victorycondition2=true;}
+            if(victorycondition1&&victorycondition2){
+                break;}
+              
         }
 
-        
+        System.out.println("Fitove");
+        //Dispose  the frame
+        dispose();
 
     }
  
@@ -506,4 +520,19 @@ public class Game extends JFrame implements Runnable,KeyListener {
         return c;
     }
     
+    public Enemy [] removEnemies(Enemy[]a,Enemy b)
+    {
+        Enemy c[] =new Enemy[a.length-1];
+        int j=0;
+        for(int i=0;i<a.length;i++)
+        {
+            
+            if(a[i]!=b)
+            {
+               c[j]=a[i];
+               j++;
+            }
+        }
+        return c;
+    }
 }

@@ -67,6 +67,11 @@ public class Player {
     {
         speed=10;
     }
+
+    public void attack(Enemy a)
+    {
+        a.reduceHp(_attack);
+    }
     
 /****************************************************** */
     //Getters
