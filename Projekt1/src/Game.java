@@ -32,6 +32,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private RenderHandler renderer;
     private Rectangle as;
     private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown,Flashattack;
+    
     public int z=0;
     public Player player;
     private int keyCode=0;
@@ -98,7 +99,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
         
 
 
-
+        //Invisible
+        
 
 
 
@@ -147,7 +149,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     enemy_fixed5 =  new Enemy(380,600,new Sprite("Flash3.png"),"Disable_type","","Long_range","NO");
     
   //INICIALIZIMI I BOSIT DHE BULLET
-    BOSS = new Enemy(1300,350,new Sprite("Flash3.png"),"Disabled_type","","Short_range","BOSS");
+    BOSS = new Enemy(1400,350,new Sprite("Flash3.png"),"Disabled_type","","Short_range","BOSS");
     enemyvektor=new Enemy[]{enemy,enemy2,enemy3,enemy4,enemy_fixed1,enemy_fixed2,enemy_fixed3,enemy_fixed4,enemy_fixed5,BOSS};
     
     

@@ -12,7 +12,8 @@ public class Enemy extends Follow_Player  {
 	Sprite _sprite;
 	Player player;
 	double speed = 1;
-	
+	public Sprite Invisible  = new Sprite("Invisible_enemy.png");
+	public Sprite set_enemy_again = new Sprite("Flash3.png");
 	String enemy_type; // Added by Adem
 	int _tolerance_range = 8;
 	private int _nr_i_vektorit=0;
@@ -241,16 +242,21 @@ public class Enemy extends Follow_Player  {
         	}
     	}
     	
-    	if(return_distance(player) > 450)
+    	if(_enemy.enemy_type == "Move_type")
     	{
-    		_enemy.enemy_setSprite(new Sprite("Invisible_enemy.png"));
-    		_enemyhpline.generateGraphics(0xFFFA00DC);
+    		if(return_distance(player) > 450)
+    		{
+    			_enemy.enemy_setSprite(Invisible);
+        		_enemyhpline.generateGraphics(0xFFFA00DC);
+    		}
+    		
+    		else
+        	{
+        		_enemy.enemy_setSprite(set_enemy_again);
+        		 _enemyhpline.generateGraphics(0xFFFF0000);
+        	}
     	}
-    	else
-    	{
-    		_enemy.enemy_setSprite(new Sprite("Flash3.png"));
-    		 _enemyhpline.generateGraphics(0xFFFF0000);
-    	}
+    	
     	
     	
     	
