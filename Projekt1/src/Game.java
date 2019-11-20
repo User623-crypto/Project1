@@ -170,7 +170,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     Flash=new Sprite("Flash3.png"); Flashdown=new Sprite("Flashrun-down.png");
     RunningFlash=new Sprite("Flashrun.png"); Flashleft=new Sprite("Flashrun-left.png");
     Flashup=new Sprite("Flashrun-up.png"); Flashattack=new Sprite("FlashAttack1.png");
-    player=new Player(100, 100, 50, Flash);
+    player=new Player(100, 100, 500, Flash);
     
     //Initialize Map
     Sprite tileGrass=new Sprite("GrassTile.png");
@@ -366,7 +366,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
                 }
             break;
             
-            case KeyEvent.VK_ALT:
+            case KeyEvent.VK_A:
                 player.setSprite(Flashattack);
                 for(int i=0;i<enemyvektor.length;i++){
             	if(player.player_catch_enemy(enemyvektor[i])){
@@ -455,13 +455,14 @@ public class Game extends JFrame implements Runnable,KeyListener {
             lastTime=now;
 
             //Kushti i fitores 
-            if(enemyvektor.length==0){victorycondition2=true;}
-            if(victorycondition1&&victorycondition2){
+            if(enemyvektor[enemyvektor.length-1].enemydefeated()){victorycondition2=true;}
+            if((victorycondition1&&victorycondition2)||player.playerDied()){
                 break;}
               
         }
-
-        System.out.println("Fitove");
+        if(player.playerDied()) {System.out.println("Humbe");}
+        else {
+        System.out.println("Fitove");}
         //Dispose  the frame
         dispose();
 
@@ -472,7 +473,6 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //Kanë problem
     @Override
     public void keyTyped(KeyEvent e) {
-        keyCode=e.getKeyCode();
 
     }
 

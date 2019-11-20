@@ -39,7 +39,7 @@ public class Enemy extends Follow_Player  {
 		_sprite = sprite;
 		enemy_height=sprite.getHeight();
         enemy_width=sprite.getWidth();
-        _enemyhpline=new Rectangle((int)enemy_x,(int)enemy_y,enemy_hp,2);
+        _enemyhpline=new Rectangle((int)enemy_x,(int)enemy_y,enemy_hp,7);
         _enemyhpline.generateGraphics(0xFFFF0000);
         
         /*
@@ -66,7 +66,12 @@ public class Enemy extends Follow_Player  {
     {
         return enemy_hp;
     }
-
+    public boolean enemydefeated()
+    {
+    	if(enemy_hp<=0)
+    		return true;
+    	return false;
+    }
     public void reduceHp(int x)
     {
         enemy_hp-=x;
@@ -87,7 +92,7 @@ public class Enemy extends Follow_Player  {
     /*************************************************************** */
 	public void renderEnemy(RenderHandler renderer) {
         if(enemy_hp>0){
-        renderer.renderRectangle(_enemyhpline,(int)enemy_x,(int)enemy_y, enemy_hp, 1);/**Added by R */
+        renderer.renderRectangle(_enemyhpline,(int)enemy_x,(int)enemy_y-10, enemy_hp/3,7);/**Added by R */
         renderer.renderSprite(_sprite, (int)enemy_x, (int)enemy_y);
         }
         else{enemy_x=0;enemy_y=0;}

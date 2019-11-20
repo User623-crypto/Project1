@@ -18,20 +18,28 @@ public class Player {
         _sprite = sprite;
         _height=sprite.getHeight();
         _width=sprite.getWidth();
-        _hpline=new Rectangle(posx, posy-10, (int)_hp, 2);
+        _hpline=new Rectangle(posx, posy-10, (int)_hp, 8);
         _hpline.generateGraphics(0xFFFF0000);
         
 
         
     }
 
-
+    boolean playerDied()
+    {
+    	if(_hp<=0)
+    		return true;
+    	else
+    		return false;
+    }
 
     public void renderPlayer(RenderHandler renderer) {
         
         
-        renderer.renderRectangle(_hpline,posx,posy,1, 1);
+        if(!playerDied()) {
+        renderer.renderRectangle(_hpline,posx,posy-10,(int)_hp/10, 8);
         renderer.renderSprite(_sprite, posx, posy);
+        }
 
     }
 
