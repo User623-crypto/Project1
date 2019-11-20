@@ -124,4 +124,12 @@ public class RenderHandler{
         if(rectanglePixels!=null)
           renderArray(rectanglePixels, width, height, xPosition, yPosition,1,1);
     }
+    
+    
+    public void renderBullet(ThrowBullet _bullet,int xZoom,int yZoom)
+    {
+        int[] rectanglePixels=_bullet.getPixels();
+        if(rectanglePixels!=null)
+          renderArray(rectanglePixels, _bullet._w, _bullet._h, _bullet._x, _bullet._y,xZoom,yZoom);
+    }
 }

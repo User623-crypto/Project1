@@ -1,6 +1,8 @@
+import java.io.EOFException;
 
 public class Enemy extends Follow_Player  {
 
+	
 	
 	private double enemy_x;
 	private double enemy_y;
@@ -10,12 +12,27 @@ public class Enemy extends Follow_Player  {
 	Sprite _sprite;
 	Player player;
 	double speed = 1;
+	
+	String enemy_type; // Added by Adem
 	int _tolerance_range = 8;
 	private int _nr_i_vektorit=0;
 	Thread my_thread;
     Rectangle _barrier;
     Rectangle _enemyhpline;/*Added by R */
-	Enemy(int x, int y, Sprite sprite) {
+    
+    /*
+     * 
+     * ADDED BY ADEM
+     * 
+     * LEJON NJE RANGE TE NDRYSHEM PER CDO ENEMY Per levijen dhe gjuajtetjen
+     */
+    //private final int beginning_X = 1111;
+    private String enemy_move_range;
+    private String enemy_shoot_range;
+    
+    //IF BOSS OR NO
+    private String if_BOSS;
+	Enemy(int x, int y, Sprite sprite,String _enemy_type,String move_range,String shoot_range,String ifboss) {
 		enemy_x = x;
 		enemy_y = y;
 		_sprite = sprite;
@@ -23,8 +40,24 @@ public class Enemy extends Follow_Player  {
         enemy_width=sprite.getWidth();
         _enemyhpline=new Rectangle((int)enemy_x,(int)enemy_y,enemy_hp,2);
         _enemyhpline.generateGraphics(0xFFFF0000);
+        
+        /*
+         * ADDED BY ADEM
+         */
+        enemy_type = _enemy_type;
+        enemy_move_range = move_range;
+        enemy_shoot_range = shoot_range;
+        if_BOSS = ifboss;
+        
+        if(if_BOSS == "BOSS")
+        {
+        	enemy_hp = 400;
+ 
+        }
 		
 		
+        
+        
 	}
 
     /*ADDED FROM R */
@@ -38,8 +71,17 @@ public class Enemy extends Follow_Player  {
         enemy_hp-=x;
     }
 
+    public void enemy_setSprite(Sprite sprite)
+    {
+        _sprite=sprite;
+    }
 
-
+    public boolean returnif_boss()
+    {
+    	if(this.if_BOSS == "BOSS")
+    		return true;
+    	return false;
+    }
 
     /*************************************************************** */
 	public void renderEnemy(RenderHandler renderer) {
@@ -174,32 +216,98 @@ public class Enemy extends Follow_Player  {
     //leviz vetem horizontal
     
     
-    public void follow(Enemy _enemy,Player player,Rectangle _barrier)
+    public void follow(Enemy _enemy,Player player)
     {
-    	if(return_distance(player) < 180)
+    	if(_enemy.enemy_move_range == "Long" && _enemy.enemy_type == "Move_type")
     	{
-    		//if(!stuck_on_left(_enemy,_barrier))
-    			move_enemy(this,player);
-    		
-    		
+    		if(return_distance(player) < 300  )
+        	{
+        		//if(!stuck_on_left(_enemy,_barrier))
+        			move_enemy(this,player);
+        			
+        		
+        		
+        	}
     	}
-    		
+    	
+    	
+    	if(_enemy.enemy_move_range == "Short" && _enemy.enemy_type == "Move_type")
+    	{
+    		if(return_distance(player) < 160  )
+        	{
+        		//if(!stuck_on_left(_enemy,_barrier))
+        			move_enemy(this,player);
+        				
+        	}
+    	}
+    	
+    	if(return_distance(player) > 450)
+    	{
+    		_enemy.enemy_setSprite(new Sprite("Invisible_enemy.png"));
+    		_enemyhpline.generateGraphics(0xFFFA00DC);
+    	}
+    	else
+    	{
+    		_enemy.enemy_setSprite(new Sprite("Flash3.png"));
+    		 _enemyhpline.generateGraphics(0xFFFF0000);
+    	}
+    	
+    	
+    	
 
     	
-    	
+    
     }
+    
+    
+    /*
+     * 
+     * FUKSIONE DHE VEPRIME VETEM PER BOSS in
+     */
     
     
     public void shoot_bullet(Player player,ThrowBullet _bullet)
     {
-
-    	if(return_distance(player) < 440)
+    	
+    	if(this.enemy_shoot_range == "Long_range")
     	{
-    		_bullet._generateGraphics(0xFF0000FF);
-    		_bullet.throw_bullet(this,player);
+    		if(return_distance(player) < 400)
+        	{
+    			//this.enemy_setSprite(new Sprite("FlashAttack1.png"));
+        			_bullet._generateGraphics(0xFF0000FF);
+            		_bullet.throw_bullet(this,player);
+        		
+        		
+        		
+        	}
+        	else
+        	{
+        		//this.enemy_setSprite(new Sprite("Flash3.png"));
+        		_bullet._generateGraphics(0xFFFA00DC);
+        		_bullet._x = (int)this.Enemy_X() + 32;
+        		_bullet._y = (int)this.Enemy_Y() + 32;
+        	}
     	}
-    	else
-    		_bullet._generateGraphics(0xFFFA00DC);
+    	
+    	if(this.enemy_shoot_range == "Short_range")
+    	{
+    		if(return_distance(player) < 200)
+        	{
+    			//this.enemy_setSprite(new Sprite("FlashAttack1.png"));
+        			_bullet._generateGraphics(0xFF0000FF);
+            		_bullet.throw_bullet(this,player);
+        		
+        		
+        		
+        	}
+        	else
+        	{
+        		//this.enemy_setSprite(new Sprite("Flash3.png"));
+        		_bullet._generateGraphics(0xFFFA00DC);
+        		_bullet._x = (int)this.Enemy_X() + 32;
+        		_bullet._y = (int)this.Enemy_Y() + 32;
+        	}
+    	}
     }
     //  -- FUND  ADDED  BY ADEM
     

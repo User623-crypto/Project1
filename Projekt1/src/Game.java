@@ -45,11 +45,21 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private Object gate;
 
     
-    private Enemy enemy,enemy2,enemy3,enemy4;
+    private Enemy enemy,enemy2,enemy3,enemy4,enemy_fixed1,enemy_fixed2,enemy_fixed3,enemy_fixed4,enemy_fixed5;
     private  Enemy [] enemyvektor;
+    
+    //Krijon nje enemy vetem per bossin 
+    // Bosi do te jete i pavarur nga te tjeret 
+    
+    private Enemy BOSS;
+    //krijimi i bullet per enemy
+    private ThrowBullet boss_bullet;
     Follow_Player follow;
     private boolean victorycondition1=false;
     private boolean victorycondition2=false;
+    
+    private ThrowBullet bullet,bullet1,bullet2,bullet3,bullet_fixed1,bullet_fixed2,bullet_fixed3,bullet_fixed4,bullet_fixed5;
+    private ThrowBullet [] bulletvektor;
     
     
 
@@ -125,14 +135,35 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //BufferedImage testImage3=loadImage("Flash3.png");
     
     //Inicilizmi i Enemy
-    enemy = new Enemy(10,25,new Sprite("Flash3.png"));
-    enemy2 = new Enemy(10,25,new Sprite("Flash3.png"));
-    enemy3 = new Enemy(10,25,new Sprite("Flash3.png"));
-    enemy4 = new Enemy(10,25,new Sprite("Flash3.png"));
-  
+    enemy = new Enemy(400,45,new Sprite("Flash3.png"),"Move_type","Long","Short_range","NO");
+    enemy2 = new Enemy(70,700,new Sprite("Flash3.png"),"Move_type","Short","Short_range","NO");
+    enemy3 = new Enemy(150,700,new Sprite("Flash3.png"),"Move_type","Short","Short_range","NO");
+    enemy4 = new Enemy(400,115,new Sprite("Flash3.png"),"Move_type","Long","Short_range","NO");
     
-    enemyvektor=new Enemy[]{enemy,enemy2,enemy3,enemy4};
+    enemy_fixed1 =  new Enemy(320,300,new Sprite("Flash3.png"),"Disable_type","","Long_range","NO");
+    enemy_fixed2 =  new Enemy(320,370,new Sprite("Flash3.png"),"Disable_type","","Long_range","NO");
+    enemy_fixed3 =  new Enemy(320,450,new Sprite("Flash3.png"),"Disable_type","","Long_range","NO");
+    enemy_fixed4 =  new Enemy(380,200,new Sprite("Flash3.png"),"Disable_type","","Long_range","NO");
+    enemy_fixed5 =  new Enemy(380,600,new Sprite("Flash3.png"),"Disable_type","","Long_range","NO");
     
+  //INICIALIZIMI I BOSIT DHE BULLET
+    BOSS = new Enemy(1300,350,new Sprite("Flash3.png"),"Disabled_type","","Short_range","BOSS");
+    enemyvektor=new Enemy[]{enemy,enemy2,enemy3,enemy4,enemy_fixed1,enemy_fixed2,enemy_fixed3,enemy_fixed4,enemy_fixed5,BOSS};
+    
+    
+    
+    //Bullet;
+    bullet = new ThrowBullet(enemy);
+    bullet1 = new ThrowBullet(enemy2);
+    bullet2 = new ThrowBullet(enemy3);
+    bullet3 = new ThrowBullet(enemy4);
+    bullet_fixed1 = new ThrowBullet(enemy_fixed1);
+    bullet_fixed2 = new ThrowBullet(enemy_fixed2);
+    bullet_fixed3 = new ThrowBullet(enemy_fixed3);
+    bullet_fixed4 = new ThrowBullet(enemy_fixed4);
+    bullet_fixed5 = new ThrowBullet(enemy_fixed5);
+    boss_bullet = new ThrowBullet(BOSS);
+    bulletvektor = new ThrowBullet[] {bullet,bullet1,bullet2,bullet3,bullet_fixed1,bullet_fixed2,bullet_fixed3,bullet_fixed4,bullet_fixed5,boss_bullet};
     //Initialize Player
     Flash=new Sprite("Flash3.png"); Flashdown=new Sprite("Flashrun-down.png");
     RunningFlash=new Sprite("Flashrun.png"); Flashleft=new Sprite("Flashrun-left.png");
@@ -151,9 +182,15 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //It updates the elements on the screen
     public void update()
     {
+    	
     	for(int i=0;i<enemyvektor.length;i++) {
     	//Funksioni per levizjen e kundershtarit ...
-    		enemyvektor[i].move_enemy(enemyvektor[i], player);
+    		{
+    			enemyvektor[i].follow(enemyvektor[i], player);
+    			enemyvektor[i].shoot_bullet(player, bulletvektor[i]);
+        		
+    		}
+    		
     	if(outOfBoundUp(enemyvektor[i]))
     	{
 
@@ -372,8 +409,15 @@ public class Game extends JFrame implements Runnable,KeyListener {
         for(int i=0;i<enemyvektor.length;i++)
         {
             enemyvektor[i].renderEnemy(renderer);
+            
         }
-        
+        //renderer.renderBullet(bullet, 1, 1);
+        for(int i=0;i<bulletvektor.length - 1;i++)
+        {
+            renderer.renderBullet(bulletvektor[i], 1, 1);
+            renderer.renderBullet(bulletvektor[bulletvektor.length - 1], 2, 2);
+            
+        }
         player.renderPlayer(renderer);
         renderer.render(graphics);
 

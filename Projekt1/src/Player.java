@@ -1,7 +1,7 @@
 
 public class Player {
     private int posx, posy;
-	private  int _hp;
+	public  int _hp;
     private Sprite _sprite; 
     private int speed=10;
     private int _height;

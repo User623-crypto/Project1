@@ -7,8 +7,8 @@ public class ThrowBullet extends Rectangle {
 	Rectangle _bullet;
 	ThrowBullet(Enemy _enemy)
 	{
-		_x = (int)_enemy.Enemy_X() + 25;
-		_y = (int)_enemy.Enemy_Y()  +25;
+		_x = (int)_enemy.Enemy_X() + 32;
+		_y = (int)_enemy.Enemy_Y()  +32;
 		
 	}
 	
@@ -41,8 +41,14 @@ public class ThrowBullet extends Rectangle {
      {
      	 return Math.sqrt((_enemy.Enemy_X()-player.Getx())*(_enemy.Enemy_X()-player.Getx()) + (_enemy.Enemy_Y()-player.Gety())*(_enemy.Enemy_Y()-player.Gety()));
      }
+     
+     public double traverse_distance(Enemy _enemy)
+     {
+     	 return Math.sqrt((_enemy.Enemy_X()-_x)*(_enemy.Enemy_X()-_x) + (_enemy.Enemy_Y()-_y)*(_enemy.Enemy_Y()-_y));
+     }
      public void throw_bullet(Enemy _enemy,Player _player)
      {
+    	 
     	 double start_X = _enemy.Enemy_X() + 32;
     	 double start_Y = _enemy.Enemy_Y() + 32;
     	 double dest_X = _player.Getx() + 32;
@@ -53,41 +59,44 @@ public class ThrowBullet extends Rectangle {
     	 double angle = Math.atan2( deltaY, deltaX );
     	 
     	 
-    	
-    	 if(  (_x < dest_X )  && (_y < dest_Y))
-    	 {
-    		 _x += 5*Math.cos(angle);
-    		 _y += 5*Math.sin(angle);
-    		 /*
+    	 _x += 5*Math.cos(angle);
+		 _y += 5*Math.sin(angle);
+    	 
+    		 
     		 if(is_hitted(_enemy,_player))
         	 {
-        		 _player.hp -=1;
-        		 System.out.println("HP : " + _player.hp);
-        	 }*/
-    	 }
-    	 else if(  (_x < dest_X )  && (_y > dest_Y + 40))
-    	 {
-    		 _x += 5*Math.cos(angle);
-    		 _y += 5*Math.sin(angle);
+    			// _player.setSprite(new Sprite("FlashAttack1.png"));
+    			 if(_enemy.returnif_boss())
+    			 {
+    				 x = (int)_enemy.Enemy_X() + 32;
+            		 _y = (int)_enemy.Enemy_Y() + 32;
+            		 _player.reduceHealth(4);  // LLoji enemy BOSS  heq me shume jete
+            		 
+    			 }
+    			 else
+    				 
+    			 {
+    				 _x = (int)_enemy.Enemy_X() + 32;
+            		 _y = (int)_enemy.Enemy_Y() + 32;
+            		 _player.reduceHealth(1);
+            		 
+    			 }
+    			 
+    			 System.out.println("HP : " + _player._hp);
+        		 
+        	 }
     		
+    	 
+    	 if(traverse_distance(_enemy) > 450 && !is_hitted(_enemy,_player))
+    	 {
+    		 _x = (int)_enemy.Enemy_X() + 32;
+    		 _y = (int)_enemy.Enemy_Y() + 32;
     	 }
     	 
-
-    	 else if(  (_x > dest_X + 40)  && (_y < dest_Y))
+    	 if(_x < 20 || _y < 20)
     	 {
-    		 _x += 5*Math.cos(angle);
-    		 _y += 5*Math.sin(angle);
-    		 
-    	 }
-    	 else if(  (_x > dest_X  + 30 )  && (_y > dest_Y + 30))
-    	 {
-    		 _x += 5*Math.cos(angle);
-    		 _y += 5*Math.sin(angle);
-    		
-    	 }
-    	 else {
-    		 _x = (int)_enemy.Enemy_X() + 25;
-    		 _y = (int)_enemy.Enemy_Y() + 25;
+    		 _x = (int)_enemy.Enemy_X() + 32;
+    		 _y = (int)_enemy.Enemy_Y() + 32;
     	 }
 		 
     	
