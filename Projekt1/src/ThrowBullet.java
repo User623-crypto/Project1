@@ -59,9 +59,18 @@ public class ThrowBullet extends Rectangle {
     	 double angle = Math.atan2( deltaY, deltaX );
     	 
     	 
-    	 _x += 5*Math.cos(angle);
-		 _y += 5*Math.sin(angle);
-    	 
+    	 if(!_player.player_catch_enemy(_enemy))
+    	 {
+    		 _x += 5*Math.cos(angle);
+    		 _y += 5*Math.sin(angle);
+    		 
+    	 }
+    	 else
+    	 {
+    		 _x = (int)_enemy.Enemy_X() + 32;
+    		 _y = (int)_enemy.Enemy_Y() + 32;
+    		 _player.reduceHealth(0.5);
+    	 }
     		 
     		 if(is_hitted(_enemy,_player))
         	 {
@@ -98,18 +107,15 @@ public class ThrowBullet extends Rectangle {
     		 _x = (int)_enemy.Enemy_X() + 32;
     		 _y = (int)_enemy.Enemy_Y() + 32;
     	 }
-		 
-    	
-    		 
-    	
     	 
+		 	 
     	 
      }
      
      
       public boolean is_hitted(Enemy _enemy,Player player)
 	 {
-		 if(((_x  - player.Getx() > 0) && (_x  - player.Getx() < 40))&& (((_y - player.Gety()) > 0) && ((y - player.Gety()) < 40)))
+		 if(((_x - player.Getx() > 0) && (_x  - player.Getx() < 40))&& (((_y - player.Gety()) > 0) && ((y - player.Gety()) < 40)))
 			  return true;
 		
 		 return false;

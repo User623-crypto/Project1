@@ -1,7 +1,7 @@
 
 public class Player {
     private int posx, posy;
-	public  int _hp;
+	public  double _hp;
     private Sprite _sprite; 
     private int speed=10;
     private int _height;
@@ -18,7 +18,7 @@ public class Player {
         _sprite = sprite;
         _height=sprite.getHeight();
         _width=sprite.getWidth();
-        _hpline=new Rectangle(posx, posy-10, _hp, 2);
+        _hpline=new Rectangle(posx, posy-10, (int)_hp, 2);
         _hpline.generateGraphics(0xFFFF0000);
         
 
@@ -101,7 +101,7 @@ public class Player {
         return nr_i_vektorit;
     }
 
-    public int Gethp()
+    public double Gethp()
     {
         return _hp;
     }
@@ -122,7 +122,7 @@ public class Player {
     }
 
     //Heq jeten e lojtarit
-    public void reduceHealth(int a)
+    public void reduceHealth(double a)
     {
         _hp-=a;
     }
