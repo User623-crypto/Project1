@@ -222,9 +222,9 @@ public class Enemy extends Follow_Player  {
     //leviz vetem horizontal
     
     
-    public void follow(Enemy _enemy,Player player)
+    public void follow(Player player)
     {
-    	if(_enemy.enemy_move_range == "Long" && _enemy.enemy_type == "Move_type")
+    	if(this.enemy_move_range == "Long" && this.enemy_type == "Move_type")
     	{
     		if(return_distance(player) < 300  )
         	{
@@ -237,7 +237,7 @@ public class Enemy extends Follow_Player  {
     	}
     	
     	
-    	if(_enemy.enemy_move_range == "Short" && _enemy.enemy_type == "Move_type")
+    	if(this.enemy_move_range == "Short" && this.enemy_type == "Move_type")
     	{
     		if(return_distance(player) < 160  )
         	{
@@ -247,27 +247,21 @@ public class Enemy extends Follow_Player  {
         	}
     	}
     	
-    	if(_enemy.enemy_type == "Move_type")
+    	if(this.enemy_type == "Move_type")
     	{
     		if(return_distance(player) > 450)
     		{
-    			_enemy.enemy_setSprite(Invisible);
+    			this.enemy_setSprite(Invisible);
         		_enemyhpline.generateGraphics(0xFFFA00DC);
     		}
     		
     		else
         	{
-        		_enemy.enemy_setSprite(set_enemy_again);
+        		this.enemy_setSprite(set_enemy_again);
         		 _enemyhpline.generateGraphics(0xFFFF0000);
         	}
     	}
     	
-    	
-    	
-    	
-
-    	
-    
     }
     
     
@@ -322,6 +316,7 @@ public class Enemy extends Follow_Player  {
     }
     //  -- FUND  ADDED  BY ADEM
     
+   
     
     //Gjen dhe llogarit distancen 
     public double return_distance(Player player)

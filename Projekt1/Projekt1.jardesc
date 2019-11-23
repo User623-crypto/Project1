@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="Game/Game.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Projekt1/Projekt1.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=Projekt1/src&lt;{Start.java[Start" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/Projekt1/.project"/>
+        <file path="/Projekt1/.classpath"/>
+        <javaElement handleIdentifier="=Projekt1/src"/>
+        <file path="/Projekt1/.gitignore"/>
+    </selectedElements>
+</jardesc>

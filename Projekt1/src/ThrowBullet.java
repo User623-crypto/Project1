@@ -1,14 +1,24 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class ThrowBullet extends Rectangle {
+public class ThrowBullet extends Rectangle implements KeyListener {
 	
 	public int _x,_y,_w = 10,_h = 10;
 	private int[] _pixels;
 	int speed = 10;
+
 	Rectangle _bullet;
 	ThrowBullet(Enemy _enemy)
 	{
 		_x = (int)_enemy.Enemy_X() + 32;
 		_y = (int)_enemy.Enemy_Y()  +32;
+		
+	}
+	
+	ThrowBullet(Player player)
+	{
+		_x = (int)player.Getx() + 32;
+		_y = (int)player.Gety()  +32;
 		
 	}
 	
@@ -46,6 +56,11 @@ public class ThrowBullet extends Rectangle {
      {
      	 return Math.sqrt((_enemy.Enemy_X()-_x)*(_enemy.Enemy_X()-_x) + (_enemy.Enemy_Y()-_y)*(_enemy.Enemy_Y()-_y));
      }
+     
+     public double traverse_distance(Player player)
+     {
+     	 return Math.sqrt((player.Getx()-_x)*(player.Getx()-_x) + (player.Gety()-_y)*(player.Gety()-_y));
+     }
      public void throw_bullet(Enemy _enemy,Player _player)
      {
     	 
@@ -69,17 +84,17 @@ public class ThrowBullet extends Rectangle {
     	 {
     		 _x = (int)_enemy.Enemy_X() + 32;
     		 _y = (int)_enemy.Enemy_Y() + 32;
-    		 _player.reduceHealth(0.5);
+    		 _player.reduceHealth(1);
     	 }
     		 
-    		 if(is_hitted(_enemy,_player))
+    		 if(is_hitted(_player))
         	 {
     			// _player.setSprite(new Sprite("FlashAttack1.png"));
     			 if(_enemy.returnif_boss())
     			 {
-    				 x = (int)_enemy.Enemy_X() + 32;
+    				 _x = (int)_enemy.Enemy_X() + 32;
             		 _y = (int)_enemy.Enemy_Y() + 32;
-            		 _player.reduceHealth(4);  // LLoji enemy BOSS  heq me shume jete
+            		 _player.reduceHealth(6);  // LLoji enemy BOSS  heq me shume jete
             		 
     			 }
     			 else
@@ -96,7 +111,7 @@ public class ThrowBullet extends Rectangle {
         	 }
     		
     	 
-    	 if(traverse_distance(_enemy) > 450 && !is_hitted(_enemy,_player))
+    	 if(traverse_distance(_enemy) > 450 && !is_hitted(_player))
     	 {
     		 _x = (int)_enemy.Enemy_X() + 32;
     		 _y = (int)_enemy.Enemy_Y() + 32;
@@ -107,19 +122,50 @@ public class ThrowBullet extends Rectangle {
     		 _x = (int)_enemy.Enemy_X() + 32;
     		 _y = (int)_enemy.Enemy_Y() + 32;
     	 }
+    	
     	 
 		 	 
     	 
      }
      
      
-      public boolean is_hitted(Enemy _enemy,Player player)
+     
+     
+    
+     
+      public boolean is_hitted(Player player)
 	 {
-		 if(((_x - player.Getx() > 0) && (_x  - player.Getx() < 40))&& (((_y - player.Gety()) > 0) && ((y - player.Gety()) < 40)))
+		 if(((_x - player.Getx() > 0) && (_x  - player.Getx() < 66))&& (((_y - player.Gety()) > 0) && ((_y - player.Gety()) < 66)))
 			  return true;
 		
 		 return false;
-	 }	
+	 }
+      
+      public boolean is_hitted(Enemy _enemy)
+ 	 {
+ 		 if(((this._x - _enemy.Enemy_X() > 0) && (this._x  - _enemy.Enemy_X() < _enemy._getwidth()))&& (((this._y - _enemy.Enemy_Y()) > 0) && ((this._y - _enemy.Enemy_Y()) < _enemy._getHeight())))
+ 			  return true;
+ 		
+ 		 return false;
+ 	 }
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}	
       
 	
 }

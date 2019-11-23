@@ -1,5 +1,6 @@
+import java.applet.Applet;
 import java.lang.Thread;
-public class Start{
+public class Start extends Applet{
    
     public static void main(String[] args) {
         Game a=new Game();
@@ -7,3 +8,8 @@ public class Start{
         gamethread.start();
     }
 }
+
+/*
+	<applet code="Start.class" width="300" height="300"> 
+		</applet>
+*/

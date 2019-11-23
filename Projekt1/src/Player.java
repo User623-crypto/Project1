@@ -8,9 +8,12 @@ public class Player {
     private int _width;
     private static final int tolerance_range=8;//Marzh gabimi
     private int nr_i_vektorit=0;
-    private int _attack=10;
+    private int _attack=8;
     Rectangle _hpline;
 
+    
+  //Vektori per te ruajtur levizjet dmth djathtas majtas ....
+  	static int[]  move_memory = new int[2];
     Player(int x, int y, int h,  Sprite sprite) {
         posx = x;
         posy = y;
@@ -135,7 +138,147 @@ public class Player {
         _hp-=a;
     }
 
+    
+    
+    /*
+     * ADDED BY ADEM
+     * GJUAN PLUMBIN PER PLAYERIN
+     */
+    public void player_shoot(Enemy _enemy,ThrowBullet _bullet)
+    {
+    	if(!player_catch_enemy(_enemy))
+    		
+    	{
+    		player_bullet_move(_enemy,_bullet);
+    		if(next_shoot(_enemy, _bullet))
+    		{
+    			_bullet._x = this.Getx() + 30;
+    			_bullet._y = this.Gety() + 30;
+    			
+    			Player.move_memory[1] = 0;
+    		}
+    	 
+    	 if(move_memory[1] == 0)
+    	 {
+    		 _bullet._x = this.Getx() + 30;
+ 			_bullet._y = this.Gety() + 30;
+    	 }
+    	 
+    	 
+    	 
+      }
+    	
+    	else
+    	{
+    		
+    		_bullet._x = this.Getx() + 30;
+    		_bullet._y = this.Gety() + 30;
+    	
+    	}
+    	 
+    	
+    	 
+    	 
+    }
+   
+    
+    /*    
+     * Levizja e plumbit per PLAYER - in
+     */
+    
+    public void player_bullet_move(Enemy _enemy,ThrowBullet _bullet)
+    {
+   	 double start_X = this.Getx() + 32;
+   	 double start_Y = this.Gety() + 32;
+   	 int player_range = 500;
 
+   	 
+   	 if(move_memory[0] == 227 && move_memory[1] == 65)
+   	 {
+   		  _bullet._x+= 2;
+   		  
+   	 }
+   	if(move_memory[0] == 226 && move_memory[1] == 65)
+  	 {
+  		  _bullet._x-= 2;
+  	 }
+   	if(move_memory[0] == 224 && move_memory[1] == 65)
+  	 {
+  		  _bullet._y-= 2;
+  	 }
+   	if(move_memory[0] == 225 && move_memory[1] == 65)
+  	 {
+  		  _bullet._y+= 2;
+  	 }
+   	 
+    }
+    
+    public  boolean next_shoot(Enemy _enemy,ThrowBullet _bullet)
+    {
+    	if(_bullet.is_hitted(_enemy) || _bullet.traverse_distance(this) > 400)
+    	{
+    		if(_bullet.is_hitted(_enemy) &&  !player_catch_enemy(_enemy))
+    	   	 {
+    	   		 attack(_enemy); 
+    	   	 }
+    		return true;
+    	}
+    		
+    	return false;
+    }
+    public static boolean _next_shoot(Enemy _enemy,ThrowBullet _bullet,Player player)
+    {
+    	if(_bullet.is_hitted(_enemy) || _bullet.traverse_distance(player) > 400)
+    		return true;
+    	return false;
+    }
+    
+    
+    /*
+     * 
+     * ADDED BY ADEM 
+     * KTHEN CIla taste eshte bere pressed
+     */
+    
+    
+    //Kthen nje vektor ku do te ruaj vlerat e shigjetave te shtypura 
+    //Ideja eshte qe kur shtypet p.sh -> dhe me pas shtypet A ath do te behet gjuajtja
+    /*Dhe  p.sh kur heren e papre shtyp ->   dhe heren e dyte shtyp <-  ath  ai ruan po ne qelizen e pare vleren e shigjetes <-
+    public int[] store_pressed()
+    {
+   	 int i;
+   	 if(Game.return_keycode() == 227)
+   	 {
+   		 i = 0;
+   		move_memory[i] = 227; 
+   	 }
+   	 if(Game.return_keycode() == 226)
+   	 {
+   		 i=0;
+   		move_memory[i] = 226; 
+   	 }
+   	 if(Game.return_keycode() == 225)
+   	 {
+   		 i=0;
+   		move_memory[i] = 225; 
+   	 }
+   	 if(Game.return_keycode() == 224)
+   	 {
+   		 i=0;
+   		move_memory[i] = 224; 
+   	 }
+   	 if(Game.return_keycode() == 65)
+   	 {
+   		 if(move_memory[0] == 0)
+   			 move_memory[1] = 0;
+   		 else if(move_memory[0] == 227 || move_memory[0] == 226 || move_memory[0] == 225 || move_memory[0] == 224 )
+   			 move_memory[1] = 65;
+   		 
+   		
+   	 }
+   	 return move_memory;
+   	 
+    }*/
     //********************************************************************************* */
     //COLLISION CHECK Testing
 
@@ -278,7 +421,9 @@ public class Player {
     
     public boolean player_catch_enemy(Enemy _enemy)
 	 {
-    	if( ((Math.abs((_enemy.Enemy_X() + 32 ) - (Getx() + 32) ) < 10) &&  (Math.abs((_enemy.Enemy_Y() + 32 ) - (Gety() + 32) ) < 10)))
+    	if( (((_enemy.Enemy_X() + _enemy._getwidth() ) - Getx()  > 0)) &&  ((_enemy.Enemy_X() - Getx()  < _enemy._getwidth()))
+
+    			&&  ((_enemy.Enemy_Y() + _enemy._getHeight() ) - Gety()  > 0) &&  ((_enemy.Enemy_Y() - Gety()  < _enemy._getHeight())))
 		 //if(((_x  - Getx() > 0) && (_x  - Getx() < 40))&& (((_y - player.Gety()) > 0) && ((y - player.Gety()) < 40)))
 			  return true;
 		

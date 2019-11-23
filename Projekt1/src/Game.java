@@ -4,10 +4,11 @@
  */
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-
+import java.awt.Toolkit;
 //Events
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
@@ -27,15 +28,18 @@ public class Game extends JFrame implements Runnable,KeyListener {
     //!!Dont use
     public static int alpha=0xFFFA00DC;
 
-    private static final int  Width=1600;private final int  Height=960;
+    //Dimesioni i ekranit
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private  final int  Width=(int)screenSize.getWidth();private final int  Height=(int)screenSize.getHeight();
     private Canvas canvas=new Canvas();
     private RenderHandler renderer;
     private Rectangle as;
     private Sprite Flash,RunningFlash,Flashleft,Flashup,Flashdown,Flashattack;
     
+    public int i = 0;
     public int z=0;
     public Player player;
-    private int keyCode=0;
+    private static int keyCode=0;
     private Map1 map;
     private Border border;
     Rectangle ad;
@@ -47,7 +51,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
 
     
     private Enemy enemy,enemy2,enemy3,enemy4,enemy_fixed1,enemy_fixed2,enemy_fixed3,enemy_fixed4,enemy_fixed5;
-    private  Enemy [] enemyvektor;
+    public  Enemy [] enemyvektor;
     
     //Krijon nje enemy vetem per bossin 
     // Bosi do te jete i pavarur nga te tjeret 
@@ -59,7 +63,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     private boolean victorycondition1=false;
     private boolean victorycondition2=false;
     
-    private ThrowBullet bullet,bullet1,bullet2,bullet3,bullet_fixed1,bullet_fixed2,bullet_fixed3,bullet_fixed4,bullet_fixed5;
+    private ThrowBullet bullet,bullet1,bullet2,bullet3,bullet_fixed1,bullet_fixed2,bullet_fixed3,bullet_fixed4,bullet_fixed5,bullet_player;
     private ThrowBullet [] bulletvektor;
     
     
@@ -164,6 +168,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
     bullet_fixed3 = new ThrowBullet(enemy_fixed3);
     bullet_fixed4 = new ThrowBullet(enemy_fixed4);
     bullet_fixed5 = new ThrowBullet(enemy_fixed5);
+   
     boss_bullet = new ThrowBullet(BOSS);
     bulletvektor = new ThrowBullet[] {bullet,bullet1,bullet2,bullet3,bullet_fixed1,bullet_fixed2,bullet_fixed3,bullet_fixed4,bullet_fixed5,boss_bullet};
     //Initialize Player
@@ -171,6 +176,8 @@ public class Game extends JFrame implements Runnable,KeyListener {
     RunningFlash=new Sprite("Flashrun.png"); Flashleft=new Sprite("Flashrun-left.png");
     Flashup=new Sprite("Flashrun-up.png"); Flashattack=new Sprite("FlashAttack1.png");
     player=new Player(100, 100, 500, Flash);
+    
+    bullet_player = new ThrowBullet(player);// Krijon plumb per playerin;
     
     //Initialize Map
     Sprite tileGrass=new Sprite("GrassTile.png");
@@ -181,18 +188,34 @@ public class Game extends JFrame implements Runnable,KeyListener {
 
     }
     
+    
+    
+    /*
+     * 
+     * ADDED BY ADEM 
+     * KTHEN CIla taste eshte bere pressed
+     */
+    
+    //Deklarohet static qe ta therasesh pa krijuar object te klases
+    public static int return_keycode()
+    {
+    	return keyCode;
+    }
     //It updates the elements on the screen
+   
     public void update()
     {
     	
     	for(int i=0;i<enemyvektor.length;i++) {
     	//Funksioni per levizjen e kundershtarit ...
     		{
-    			enemyvektor[i].follow(enemyvektor[i], player);
+    			enemyvektor[i].follow( player);
     			enemyvektor[i].shoot_bullet(player, bulletvektor[i]);
-        		
+    			player.player_shoot(enemyvektor[i], bullet_player);
+    			
+    			
     		}
-    		
+    	
     	if(outOfBoundUp(enemyvektor[i]))
     	{
 
@@ -256,8 +279,22 @@ public class Game extends JFrame implements Runnable,KeyListener {
     	
         switch(keyCode)
         {
+        
+        
             case KeyEvent.VK_UP:
+            	
+                				Player.move_memory[0] = 224; 
+        
+              	 
             player.setSprite(Flashup);
+            for(int i=0;i<enemyvektor.length;i++) {
+            	//Funksioni per levizjen e kundershtarit ...
+            		{
+            			
+            			player.player_shoot(enemyvektor[i], bullet_player);
+                		
+            		}
+            }
             //Checks if the player collide with any of the objects inside the vector && if he is out of border
             if(!player.checkObjcollisionUp(vektor)&&!outOfBoundUp(player))
                 {
@@ -286,7 +323,12 @@ public class Game extends JFrame implements Runnable,KeyListener {
             break;
 
             case KeyEvent.VK_DOWN:
+
+                				Player.move_memory[0] = 225; 
+
+           		 
             player.setSprite(Flashdown);
+            
             if(!player.checkObjcollisionDown(vektor)&&!outOfBoundDown(player)){
                 player.moveDown(); 
                 }
@@ -313,7 +355,11 @@ public class Game extends JFrame implements Runnable,KeyListener {
             break;
 
             case KeyEvent.VK_LEFT:
+
+                				Player.move_memory[0] = 226; 
+
             player.setSprite(Flashleft);
+            
             if(!player.checkObjcollisionLeft(vektor)&&!outOfBoundLeft(player)){
                 player.moveLeft(); 
                 }
@@ -340,7 +386,12 @@ public class Game extends JFrame implements Runnable,KeyListener {
             break;
 
             case KeyEvent.VK_RIGHT:
+
+                				Player.move_memory[0] = 227; 
+     
+
             player.setSprite(RunningFlash);
+            
             if(!player.checkObjcollisionRight(vektor)&&!outOfBoundRight(player)){
                 player.moveRight(); 
                 }
@@ -367,7 +418,18 @@ public class Game extends JFrame implements Runnable,KeyListener {
             break;
             
             case KeyEvent.VK_A:
+            	for(int i=0;i<enemyvektor.length;i++) {
+                	
+              		if(Player.move_memory[0] == 0)
+             			 Player.move_memory[1] = 0;
+             		 else if(Player.move_memory[0] == 227 || Player.move_memory[0] == 226 || Player.move_memory[0] == 225 || Player.move_memory[0] == 224
+             				 	&& Player._next_shoot(enemyvektor[i],bullet, player) == true)
+             			 Player.move_memory[1] = 65;
+            	}
+            	
+          		 
                 player.setSprite(Flashattack);
+               
                 for(int i=0;i<enemyvektor.length;i++){
             	if(player.player_catch_enemy(enemyvektor[i])){
                     
@@ -375,6 +437,7 @@ public class Game extends JFrame implements Runnable,KeyListener {
                     if(enemyvektor[i].GetHp()<=0)
                     {
                         //Removes the enemy from the enemyvector
+         
                         enemyvektor=removEnemies(enemyvektor, enemyvektor[i]);
                     }
 
@@ -414,10 +477,18 @@ public class Game extends JFrame implements Runnable,KeyListener {
             
         }
         //renderer.renderBullet(bullet, 1, 1);
+        
+        //Plumbi per playerin
+        renderer.renderBullet(bullet_player, 1, 1);
+        bullet_player._generateGraphics(0xFFFA10A3);
+        
+        
         for(int i=0;i<bulletvektor.length - 1;i++)
         {
             renderer.renderBullet(bulletvektor[i], 1, 1);
             renderer.renderBullet(bulletvektor[bulletvektor.length - 1], 2, 2);
+            
+           // bullet_player._generateGraphics(0xFFFA00DC);
             
         }
         player.renderPlayer(renderer);
